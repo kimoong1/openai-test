@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#eceee7">
+  <meta name="description" content="FLUX — 움직임을 만드는 여섯 가지 실험. Original procedural motion graphics, made in your browser.">
+  <title>FLUX — Motion, without limits.</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="FLUX 홈"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 5h24L4 27h24M4 16h24"/></svg>FLUX<span class="brand-dot">®</span></a>
+    <div class="topline"><span class="live-dot"></span> INDEPENDENT MOTION LAB <span class="slash">/</span> VOL. 001</div>
+    <a class="source-link" href="https://github.com/kimoong1/sejongai-motion" target="_blank" rel="noopener noreferrer">소스 코드 <span>↗</span></a>
+  </header>
+  <div class="workspace">
+    <aside class="sidebar">
+      <div class="sidebar-heading"><span>THE COLLECTION</span><span>01—06</span></div>
+      <nav id="scene-list" aria-label="모션 장면"></nav>
+      <div class="sidebar-note"><span class="tiny-star">✳</span><p>수식에서 움직임으로.<br>당신의 감각으로 완성하세요.</p><span>BUILT TO BE REMIXED.</span></div>
+      <button id="show-help" class="help-button"><span>⌘</span> 키보드 단축키 <span>?</span></button>
+    </aside>
+    <main>
+      <section class="intro">
+        <div><div class="eyebrow">A PLAYGROUND FOR THE MOVING IMAGE</div><h1>Make some<br><em>beautiful noise.</em><span class="heading-star">✳</span></h1></div>
+        <div class="intro-copy"><span class="edition">실시간 모션 그래픽 스튜디오</span><p>움직임을 고르고, 규칙을 바꾸고.<br>당신만의 한 장면을 만드세요.</p><span class="local-badge"><i></i> 모든 작업은 이 브라우저 안에서</span></div>
+      </section>
+      <section class="studio" aria-label="모션 편집기">
+        <div class="stage-panel">
+          <div class="stage-top"><div><span class="live-dot"></span> LIVE CANVAS <span class="stage-top-dim">/</span> <span id="scene-code">EXP. 001</span></div><div><span id="dimensions">1280 × 800</span><button id="fullscreen" class="icon-button" aria-label="전체 화면" title="전체 화면">⛶</button></div></div>
+          <div class="canvas-wrap" id="canvas-wrap"><canvas id="stage" width="1280" height="800" aria-label="선택한 모션 그래픽 미리보기"></canvas><div class="stage-caption"><span id="stage-name">VORTEX<br>STUDY.</span><span class="stage-caption-right">PROCEDURAL<br>ALWAYS IN MOTION ↗</span></div><div class="stage-index">FIG. <span id="stage-index">01</span> <span> / FLUX EXPERIMENTS</span></div><span class="pointer-hint" id="pointer-hint">마우스로 공간을 움직여보세요 ↗</span></div>
+          <div class="transport"><button id="play" class="play-button" aria-label="일시정지" title="재생 / 일시정지 (Space)"><svg id="pause-icon" viewBox="0 0 20 20"><path d="M6 4v12M14 4v12"/></svg><svg id="play-icon" viewBox="0 0 20 20" hidden><path d="m6 3 10 7-10 7z"/></svg></button><button id="restart" class="icon-button restart" aria-label="처음부터 재생" title="처음으로 (R)">↺</button><span id="time-display" class="time-display">00:00</span><div class="scrubber"><input id="timeline" aria-label="타임라인" type="range" min="0" max="8" step="0.001" value="0"><div class="timeline-ticks"><span>0s</span><span>2s</span><span>4s</span><span>6s</span><span>8s</span></div></div><span class="loop-tag">↻ LOOP</span><select id="speed" aria-label="재생 속도"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div>
+        </div>
+        <aside class="inspector" aria-label="장면 설정"><div class="inspector-title">MAKE IT YOURS <span>↗</span></div><div class="control-group"><label for="motion-text">YOUR MESSAGE <span>01</span></label><input id="motion-text" maxlength="24" value="MAKE WAVES" autocomplete="off" spellcheck="false"><p class="control-hint">키네틱 타이포 장면에 적용됩니다.</p></div><div class="control-group"><label>COLOR SYSTEM <span>02</span></label><div id="palettes" class="palettes" role="group" aria-label="색상 팔레트"><button class="swatch acid selected" data-palette="acid" aria-label="Acid 팔레트" aria-pressed="true"><i></i></button><button class="swatch ember" data-palette="ember" aria-label="Ember 팔레트" aria-pressed="false"><i></i></button><button class="swatch ice" data-palette="ice" aria-label="Ice 팔레트" aria-pressed="false"><i></i></button><button class="swatch mono" data-palette="mono" aria-label="Mono 팔레트" aria-pressed="false"><i></i></button></div><div class="palette-caption"><span id="palette-name">ACID / ELECTRIC LIME</span><span id="palette-hex">#D3FB52</span></div></div><div class="control-group"><label for="intensity">INTENSITY <output id="intensity-value">65%</output></label><input id="intensity" type="range" min="0" max="100" value="65"><div class="range-labels"><span>차분하게</span><span>대담하게</span></div></div><div class="control-group"><label for="detail">DETAIL <output id="detail-value">75%</output></label><input id="detail" type="range" min="20" max="100" value="75"><div class="range-labels"><span>미니멀</span><span>디테일</span></div></div><div class="control-group aspect-group"><label for="aspect">FRAME RATIO <span>05</span></label><select id="aspect"><option value="16:10">16:10 — Studio</option><option value="16:9">16:9 — Landscape</option><option value="1:1">1:1 — Square</option><option value="9:16">9:16 — Portrait</option></select></div><button id="shuffle" class="shuffle-button"><span>⤨</span> 새로운 조합 <kbd>S</kbd></button><div class="inspector-bottom"><span class="mini-cross">+</span> SMALL CHANGES. BIG FEELINGS.</div></aside>
+      </section>
+      <section class="scene-detail"><div class="scene-detail-title"><span id="detail-number">01 /</span><div><h2 id="scene-title">Vortex study</h2><p id="scene-subtitle">질서와 혼돈 사이, 수천 개 입자가 그리는 조형.</p></div></div><div class="scene-tags" id="scene-tags"><span>PARTICLES</span><span>3D PROJECTION</span></div></section>
+      <section class="output-bar" aria-label="저장 및 공유"><div class="output-copy"><span class="output-symbol">↳</span><div><strong>좋은 움직임은, 남겨두세요.</strong><span>워터마크 없이. 당신의 다음 프로젝트로.</span></div></div><div class="output-actions"><button id="share" class="subtle-button" title="현재 설정을 URL에 저장하고 복사">링크 공유 ↗</button><details class="preset-menu"><summary>프리셋 <span>⌄</span></summary><div><button id="save-preset">JSON 저장 ↓</button><button id="load-preset">JSON 불러오기 ↑</button></div></details><button id="export-png" class="outline-button">스틸 저장 <span>↓</span></button><button id="export-video" class="primary-button">영상 내보내기 <span>↗</span></button></div></section>
+      <footer><span>FLUX® <span class="footer-muted">/ EXPERIMENTS IN MOTION</span></span><span>6 SCENES. INFINITE POSSIBILITIES.</span><a href="https://github.com/gongnyang/awesome-ai-motion" target="_blank" rel="noopener noreferrer">Inspired by Awesome AI Motion ↗</a></footer>
+    </main>
+  </div>
+  <input type="file" id="preset-file" accept="application/json,.json" hidden>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="help-dialog"><button id="close-help" class="dialog-close" aria-label="닫기">×</button><span class="eyebrow">A FEW SHORTCUTS</span><h2>Keep your flow.</h2><dl><div><dt>재생 / 일시정지</dt><dd><kbd>Space</kbd></dd></div><div><dt>장면 선택</dt><dd><kbd>1</kbd> — <kbd>6</kbd></dd></div><div><dt>새로운 조합</dt><dd><kbd>S</kbd></dd></div><div><dt>타임라인 처음으로</dt><dd><kbd>R</kbd></dd></div><div><dt>단축키 보기</dt><dd><kbd>?</kbd></dd></div></dl><p>시스템의 모션 줄이기 설정이 켜져 있으면 정지 화면으로 시작합니다.</p></dialog>
+  <dialog id="export-dialog"><span class="eyebrow">YOUR MOTION, IN THE MAKING</span><h2>움직임을 담고 있어요.</h2><p id="export-status">8초 분량의 WebM 영상을 실시간으로 저장합니다.</p><progress id="export-progress" value="0" max="1"></progress><button id="cancel-export" class="outline-button">내보내기 취소</button></dialog>
+  <noscript>FLUX는 JavaScript가 필요합니다. 브라우저에서 JavaScript를 허용해 주세요.</noscript>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
