@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#eceee7">
+  <meta name="description" content="FLUX — 움직임을 만드는 여섯 가지 실험. Original procedural motion graphics, made in your browser.">
+  <title>FLUX — Motion, without limits.</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23121611%22%2F%3E%3Cpath%20d%3D%22M14%2014h36L14%2050h36M14%2032h36%22%20fill%3D%22none%22%20stroke%3D%22%23d3fb52%22%20stroke-width%3D%226%22%2F%3E%3C%2Fsvg%3E" type="image/svg+xml">
+  <style>
+:root{--paper:#eceee7;--ink:#20251e;--muted:#7c8277;--line:#d4d8ce;--acid:#d3fb52;--panel:#f4f5ef;--mono:'Consolas','SFMono-Regular',monospace;--sans:Arial,'Segoe UI','Malgun Gothic',sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13px}button,input,select,summary{font:inherit}button,a,input,select,summary{-webkit-tap-highlight-color:transparent}button{cursor:pointer;color:inherit}button{border:0;background:none}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid #76952a;outline-offset:4px}button:disabled{cursor:wait;opacity:.5}[hidden]{display:none!important}.topbar{height:83px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 35px;gap:36px}.brand{font-size:33px;font-weight:900;letter-spacing:-2px;display:flex;align-items:center;gap:9px}.brand svg{width:26px;height:30px;fill:none;stroke:currentColor;stroke-width:3}.brand-dot{font-size:12px;align-self:flex-start;letter-spacing:0;margin:8px 0 0 -5px}.topline{font-family:var(--mono);letter-spacing:1.3px;font-size:10px;display:flex;gap:11px;align-items:center}.live-dot{display:inline-block;width:6px;height:6px;background:#719a37;border-radius:50%}.slash{margin:0 3px;color:#9ca393}.source-link{margin-left:auto;font-size:12px;display:flex;gap:28px;align-items:center}.source-link span{font-size:21px}.workspace{display:grid;grid-template-columns:228px minmax(0,1fr)}.sidebar{border-right:1px solid var(--line);padding:38px 22px 25px;display:flex;flex-direction:column;min-height:calc(100vh - 83px)}.sidebar-heading{display:flex;justify-content:space-between;font:9px var(--mono);letter-spacing:1px;margin:0 0 23px}.sidebar-heading span:last-child{color:var(--muted)}.scene-button{width:100%;display:grid;grid-template-columns:34px 1fr 15px;gap:10px;text-align:left;align-items:center;padding:13px 10px;border:1px solid transparent;margin:0 0 6px;border-radius:5px;transition:background .2s,border-color .2s}.scene-button:hover{background:#e1e5d8}.scene-button.active{background:#dce5c5;border-color:#becba7}.scene-icon{width:32px;height:35px;display:flex;align-items:center;justify-content:center}.scene-icon svg{height:32px;width:32px;stroke:currentColor;fill:none;stroke-width:1}.scene-button strong{display:block;font-size:12px;font-weight:600;margin-bottom:6px}.scene-button small{font:8px var(--mono);color:#7b8370;letter-spacing:.7px}.scene-button .scene-arrow{font-size:14px;color:#6d785d}.sidebar-note{margin-top:auto;padding:60px 8px 28px}.tiny-star{font-size:45px;display:block;margin-bottom:21px;font-weight:300}.sidebar-note p{font-size:11px;line-height:1.9;color:#6e7668}.sidebar-note>span:last-child{display:block;font:8px var(--mono);letter-spacing:1px;margin-top:22px;color:#8a9182}.help-button{border-top:1px solid var(--line);display:flex;gap:9px;align-items:center;font-size:10px;color:#757c6d;padding:20px 0 0}.help-button>span:first-child{font-size:16px}.help-button>span:last-child{margin-left:auto;border:1px solid #bfc5b6;border-radius:3px;font:10px var(--mono);padding:2px 5px}main{padding:35px 40px 0;max-width:1800px;min-width:0;width:100%;margin:auto}.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:29px}.eyebrow{font:9px var(--mono);letter-spacing:1.5px;color:#7d8376}.intro h1{font-size:clamp(34px,3.6vw,62px);line-height:1;letter-spacing:-2.8px;font-weight:500;margin:15px 0 0;position:relative}.intro h1 em{font-family:Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-2.7px}.heading-star{font-family:Arial;font-style:normal;display:inline-block;font-size:.85em;vertical-align:top;margin-left:24px;margin-top:-3px}.intro-copy{padding-bottom:2px;min-width:205px}.edition{font-size:10px;letter-spacing:.4px}.intro-copy p{font-size:11px;line-height:1.9;color:#78806e;margin:12px 0 15px}.local-badge{font-size:9px;color:#727b65;display:flex;align-items:center;gap:6px}.local-badge i{width:5px;height:5px;background:#82985d;border-radius:50%}.studio{display:grid;grid-template-columns:minmax(0,1fr) 230px;border:1px solid #cdd2c3;border-radius:6px;overflow:hidden;background:var(--panel);box-shadow:0 6px 20px #26311b06}.stage-panel{min-width:0;background:#090d12;display:flex;flex-direction:column;justify-content:center}.stage-top{height:39px;flex-shrink:0;border-bottom:1px solid #ffffff0c;display:flex;justify-content:space-between;align-items:center;padding:0 20px;color:#8e968a;font:8px var(--mono);letter-spacing:1px;background:#0c1015}.stage-top>div{display:flex;align-items:center;gap:9px}.stage-top .live-dot{background:#cefa63;width:4px;height:4px}.stage-top-dim{margin:0 5px;color:#4f574b}.icon-button{font-size:22px;line-height:1;display:inline-flex;align-items:center;justify-content:center;padding:4px;color:inherit;min-width:26px;min-height:26px}.stage-top .icon-button{font-size:21px;margin-right:-7px}.canvas-wrap{aspect-ratio:16/10;position:relative;overflow:hidden;background:#080b10;width:100%;max-height:70vh;isolation:isolate}.canvas-wrap canvas{display:block;width:100%;height:100%;object-fit:contain}.stage-caption{position:absolute;inset:25px 27px auto;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;mix-blend-mode:screen}.stage-caption>span:first-child{font-weight:800;font-size:clamp(16px,2.25vw,35px);line-height:.95;letter-spacing:-1.5px;color:#f0f3df}.stage-caption-right{text-align:right;font:7px/1.7 var(--mono);letter-spacing:1px;color:#98a28d;margin-top:2px}.stage-index{position:absolute;bottom:23px;left:27px;font:8px var(--mono);letter-spacing:1px;color:#d0e8a4}.stage-index>span:last-child{color:#6c7868}.pointer-hint{position:absolute;right:25px;bottom:23px;font-size:8px;color:#879777;transition:opacity .3s;pointer-events:none}.transport{display:flex;align-items:center;gap:12px;background:#10151a;min-height:60px;padding:10px 19px;color:#b2bba8;border-top:1px solid #ffffff0e}.play-button{width:28px;height:30px;padding:4px;color:var(--acid)}.play-button svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.5;fill:none}.play-button #play-icon{fill:currentColor;stroke:none}.restart{font-size:22px;color:#858e7a;min-width:20px}.time-display{font:9px var(--mono);min-width:34px;color:#e6ecd9}.scrubber{flex:1;padding:0 4px;min-width:40px}.timeline-ticks{display:flex;justify-content:space-between;color:#616c5a;font:7px var(--mono);margin:4px 1px 0}.scrubber input{width:100%;height:3px;margin:6px 0 0;display:block;accent-color:var(--acid)}input[type=range]{appearance:none;-webkit-appearance:none;background:linear-gradient(to right,#8da949 0%,#8da949 var(--fill,65%),#d4d9ca var(--fill,65%),#d4d9ca 100%);height:3px;cursor:pointer;border-radius:0}input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height:8px;border-radius:50%;background:#4e642f;border:1px solid var(--paper)}input[type=range]::-moz-range-thumb{width:8px;height:8px;border-radius:50%;background:#4e642f;border:1px solid var(--paper)}.scrubber input[type=range]{background:linear-gradient(to right,#b3cf71 0%,#b3cf71 var(--fill,0%),#333d30 var(--fill,0%),#333d30 100%)}.scrubber input[type=range]::-webkit-slider-thumb{background:#d3fb52;border:0;width:7px;height:7px}.scrubber input[type=range]::-moz-range-thumb{background:#d3fb52;border:0;width:7px;height:7px}.loop-tag{font:8px var(--mono);white-space:nowrap;margin-left:2px}.transport select{background:transparent;border:none;color:#b4bda9;font:10px var(--mono);padding:0;width:41px;cursor:pointer}.transport select option{background:#10151a}.inspector{padding:23px 21px 15px;display:flex;flex-direction:column;border-left:1px solid var(--line)}.inspector-title{font:10px var(--mono);letter-spacing:1.25px;display:flex;justify-content:space-between;padding-bottom:23px;border-bottom:1px solid var(--line)}.inspector-title span{font-size:15px;line-height:10px}.control-group{padding-top:23px}.control-group label{font:8px var(--mono);letter-spacing:.7px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.control-group label>span,.control-group output{font:8px var(--mono);letter-spacing:0;color:#8b937e}.control-group input[type=text],#motion-text{width:100%;padding:10px 10px;border:1px solid #d5dacb;background:#ecefe5;color:#475039;border-radius:3px;font-size:11px}.control-hint{font-size:8px;color:#959d89;margin:8px 0 0}.palettes{display:flex;gap:10px}.swatch{height:28px;width:28px;border:1px solid transparent;border-radius:50%;padding:4px;display:flex;justify-content:center;align-items:center}.swatch i{height:100%;width:100%;border-radius:50%;display:block}.swatch.selected{border-color:#49543b}.swatch.acid i{background:#d3fb52}.swatch.ember i{background:#ff8855}.swatch.ice i{background:#8dc9fd}.swatch.mono i{background:#555f54}.palette-caption{display:flex;justify-content:space-between;font:6px var(--mono);letter-spacing:.2px;color:#89927b;margin-top:10px;gap:4px}.control-group input[type=range]{width:100%;display:block;margin:16px 0 10px}.range-labels{display:flex;justify-content:space-between;font-size:8px;color:#8e9782}.aspect-group select{width:100%;border:1px solid #d5dacb;color:#5c684b;background:#ecefe5;padding:8px 6px;border-radius:3px;font:9px var(--mono)}.shuffle-button{margin-top:24px;padding:9px 0;border:1px solid #c9d1bc;border-radius:3px;display:flex;justify-content:center;align-items:center;gap:8px;font-size:10px}.shuffle-button span{font-size:19px}.shuffle-button kbd{margin-left:15px;font:8px var(--mono);color:#8b967a}.shuffle-button:hover{background:#e3e9d7}.inspector-bottom{font:6px var(--mono);letter-spacing:.65px;color:#9aa38d;margin-top:auto;padding-top:22px;white-space:nowrap}.mini-cross{font-size:12px;margin-right:7px}.scene-detail{display:flex;align-items:center;justify-content:space-between;margin:21px 0 23px;gap:15px}.scene-detail-title{display:flex;align-items:flex-start;gap:14px}.scene-detail-title>span{font:10px var(--mono);color:#98a08b;padding-top:4px;white-space:nowrap}.scene-detail h2{font-size:19px;font-weight:500;letter-spacing:-.6px;margin:0 0 8px}.scene-detail p{color:#828b74;font-size:10px;margin:0;line-height:1.5}.scene-tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.scene-tags span{font:7px var(--mono);letter-spacing:.3px;border:1px solid #cdd4c0;border-radius:3px;padding:6px 8px;white-space:nowrap;color:#7a846a}.output-bar{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:19px 0;display:flex;justify-content:space-between;align-items:center;gap:16px}.output-copy{display:flex;align-items:center;gap:14px}.output-symbol{font-size:30px;font-family:Georgia;line-height:1;color:#6e7a5a}.output-copy strong{font-size:11px;font-weight:500;display:block}.output-copy div>span{display:block;font-size:9px;color:#8a957c;margin-top:7px}.output-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.subtle-button,.preset-menu summary{font-size:10px;color:#7c896b;cursor:pointer;padding:10px 8px;white-space:nowrap}.preset-menu{position:relative}.preset-menu summary{list-style:none;display:flex;gap:10px}.preset-menu summary::-webkit-details-marker{display:none}.preset-menu>div{position:absolute;bottom:40px;left:0;min-width:135px;border:1px solid var(--line);padding:6px;background:var(--panel);box-shadow:0 4px 12px #0001;z-index:5;border-radius:4px}.preset-menu>div button{display:block;font-size:10px;white-space:nowrap;padding:10px;width:100%;text-align:left}.preset-menu>div button:hover{background:#e1e7d5}.outline-button,.primary-button{border:1px solid #b9c3a9;border-radius:3px;padding:12px 15px;display:inline-flex;justify-content:center;align-items:center;gap:17px;font-size:10px;white-space:nowrap}.outline-button:hover{background:#e2e8d7}.primary-button{background:var(--acid);border-color:#c0e34b;color:#263318}.primary-button span{font-size:16px;line-height:10px}.primary-button:hover{background:#c6ee42}footer{padding:22px 0 25px;display:flex;justify-content:space-between;gap:20px;font:7px var(--mono);letter-spacing:.6px;color:#98a18a}footer>span:first-child{color:#5c684e}.footer-muted{color:#98a18a}footer a{font:7px var(--sans);letter-spacing:0}#toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:30;border:1px solid #b9d27b;background:#20271a;color:#e5f0d2;padding:13px 22px;box-shadow:0 6px 25px #0002;border-radius:5px;transition:opacity .2s,transform .2s;font-size:12px;max-width:90vw;text-align:center}#toast.visible{opacity:1;transform:translate(-50%,0)}dialog{border:1px solid #b9c5a7;border-radius:7px;background:var(--paper);color:var(--ink);padding:37px;max-width:440px;width:calc(100% - 30px);box-shadow:0 20px 90px #0004}dialog::backdrop{background:#0b100db3;backdrop-filter:blur(6px)}dialog h2{font-size:27px;letter-spacing:-1px;font-weight:500;margin:13px 0 24px}dialog p{font-size:11px;line-height:1.9;color:#7c896d}.dialog-close{position:absolute;right:12px;top:10px;font-size:24px;color:#79866b}dialog dl{margin:0 0 24px}dialog dl>div{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:11px}dialog dd{margin:0}kbd{font:10px var(--mono)}dialog kbd{border:1px solid #c3ccb6;border-radius:3px;padding:4px 7px;background:#e4e9dc}progress{width:100%;height:7px;accent-color:#789d34;margin:15px 0 25px;display:block}#export-dialog .outline-button{width:100%}.canvas-wrap:fullscreen{width:100vw;height:100vh;max-height:none;aspect-ratio:auto;display:flex;align-items:center;justify-content:center}.canvas-wrap:fullscreen canvas{object-fit:contain}.canvas-wrap:fullscreen .stage-caption{inset:35px}.canvas-wrap:fullscreen .stage-caption>span:first-child{font-size:42px}.canvas-wrap:fullscreen .pointer-hint{bottom:30px}.recording .stage-caption,.recording .stage-index{opacity:.6}@media(min-width:1600px){.workspace{grid-template-columns:250px minmax(0,1fr)}main{padding:45px 55px 0}.studio{grid-template-columns:minmax(0,1fr) 250px}.sidebar{padding-left:28px;padding-right:28px}.intro{margin-bottom:35px}.inspector{padding:26px}.control-group{padding-top:28px}}@media(max-width:1250px){main{padding:28px 25px 0}.workspace{grid-template-columns:194px minmax(0,1fr)}.sidebar{padding-left:13px;padding-right:13px}.studio{grid-template-columns:minmax(0,1fr) 200px}.inspector{padding:18px 15px 12px}.control-group{padding-top:19px}.inspector-title{padding-bottom:18px}.intro h1{font-size:43px}.intro-copy{min-width:185px}.output-copy{gap:8px}.output-copy strong{font-size:10px}.output-copy div>span{font-size:8px}.output-actions{gap:3px}.outline-button,.primary-button{padding:11px 10px;gap:9px}.subtle-button,.preset-menu summary{font-size:9px;padding:9px 6px}.canvas-wrap{min-height:330px}.stage-caption>span:first-child{font-size:24px}.stage-caption{inset:23px}.stage-caption-right{font-size:6px}}@media(max-width:1050px){.workspace{grid-template-columns:170px minmax(0,1fr)}.sidebar-heading{font-size:8px;letter-spacing:.3px}.scene-button{grid-template-columns:27px 1fr 9px;padding:12px 5px;gap:7px}.scene-icon svg{width:27px}.scene-button strong{font-size:11px}.scene-button small{font-size:7px}.scene-button .scene-arrow{font-size:11px}.intro h1{font-size:36px;letter-spacing:-2px}.intro h1 em{letter-spacing:-2px}.heading-star{margin-left:15px}.intro-copy{min-width:155px}.intro-copy p{font-size:10px}.edition{font-size:9px}.topline{font-size:8px}.studio{grid-template-columns:minmax(0,1fr) 180px}.inspector{padding:17px 13px 12px}.control-group{padding-top:18px}.control-group label{font-size:7px}.palette-caption{font-size:5.5px}.palettes{gap:8px}.inspector-bottom{font-size:5px;letter-spacing:.4px}.transport{gap:7px;padding:10px 12px}.loop-tag{display:none}.pointer-hint{display:none}.output-copy{display:none}.output-actions{width:100%;justify-content:flex-end}footer>span:nth-child(2){display:none}.scene-detail p{font-size:9px}.scene-tags span{font-size:6px;padding:5px}.canvas-wrap{min-height:335px}.shuffle-button{font-size:9px;margin-top:21px}.stage-caption-right{display:none}}@media(max-width:800px){.topbar{height:68px;padding:0 22px}.brand{font-size:28px}.brand svg{width:23px}.topline{margin-left:auto}.topline .slash,.topline .slash+span{display:none}.source-link{margin-left:0;gap:8px;font-size:10px}.workspace{display:block}.sidebar{min-height:0;padding:16px 22px;border-right:none;border-bottom:1px solid var(--line)}.sidebar-heading,.sidebar-note,.help-button{display:none}#scene-list{display:flex;gap:6px;overflow:auto;scrollbar-width:none}#scene-list::-webkit-scrollbar{display:none}.scene-button{display:flex;flex-shrink:0;gap:8px;width:auto;padding:8px 11px;margin:0;border-color:#d3d9c8;border-radius:4px}.scene-button strong{font-size:10px;font-weight:400;margin:0;white-space:nowrap}.scene-button small,.scene-arrow{display:none}.scene-icon,.scene-icon svg{width:22px;height:22px}main{padding:28px 22px 0}.intro h1{font-size:46px}.intro{margin-bottom:25px}.intro-copy{min-width:165px}.studio{grid-template-columns:minmax(0,1fr) 195px}.canvas-wrap{min-height:360px}.stage-caption{inset:22px}.stage-caption>span:first-child{font-size:27px}.stage-index{left:22px}.stage-top{padding:0 15px}.inspector-bottom{font-size:5.5px}.scene-detail{margin-bottom:22px}.output-copy{display:flex}.output-actions{width:auto;gap:5px}.output-actions .subtle-button{display:none}.output-copy strong{font-size:9px}.output-copy div>span{font-size:7px}.output-symbol{font-size:24px}.control-group{padding-top:20px}}@media(max-width:600px){.topline{display:none}.source-link{margin-left:auto}.topbar{height:63px}.sidebar{padding:12px 17px}.workspace main{padding:24px 17px 0}.eyebrow{font-size:7px;letter-spacing:1px}.intro{gap:10px;align-items:flex-start}.intro h1{font-size:39px;margin-top:12px;line-height:1.03}.intro-copy{min-width:0;max-width:112px;padding-top:25px}.edition{font-size:8px;line-height:1.8;display:block}.intro-copy p{font-size:8px;margin:7px 0 0;line-height:1.8}.local-badge{display:none}.heading-star{margin-left:12px;font-size:.8em}.studio{display:flex;flex-direction:column}.canvas-wrap{aspect-ratio:16/12;min-height:0;max-height:65vh}.stage-top{height:35px;font-size:7px}.stage-caption{inset:21px}.stage-caption>span:first-child{font-size:27px}.stage-index{left:21px;bottom:20px;font-size:7px}.transport{min-height:55px;padding:10px 14px;gap:9px}.transport .time-display{font-size:8px}.inspector{border-left:0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;padding:20px}.inspector-title{grid-column:1/-1;padding-bottom:15px;font-size:9px}.control-group{padding:0;min-width:0}.control-group label{font-size:7px;margin-bottom:10px}.control-hint{font-size:7px}.palette-caption{font-size:5.5px}.palettes{gap:9px}.swatch{width:26px;height:26px}.control-group input[type=range]{margin-top:15px}.shuffle-button{margin:0;align-self:end;font-size:9px;min-height:34px}.inspector-bottom{display:none}.scene-detail{align-items:flex-start;margin:20px 0}.scene-detail-title{gap:9px}.scene-detail h2{font-size:17px;margin-bottom:7px}.scene-detail p{font-size:9px;max-width:230px;line-height:1.8}.scene-tags{max-width:86px;gap:4px}.scene-tags span{font-size:5px;padding:5px}.scene-detail-title>span{font-size:8px}.output-bar{align-items:stretch;flex-direction:column;padding:18px 0;gap:17px}.output-copy strong{font-size:10px}.output-copy div>span{font-size:8px}.output-copy{gap:10px}.output-actions{justify-content:space-between;gap:7px;width:100%}.output-actions .subtle-button{display:block;font-size:8px;padding-left:0}.preset-menu summary{font-size:8px;padding:9px 0;gap:4px}.outline-button,.primary-button{font-size:9px;padding:11px 10px;gap:9px}.primary-button{flex:1;max-width:135px}footer{font-size:6px;letter-spacing:.2px;padding:20px 0;gap:12px}footer a{font-size:6px}footer .footer-muted{display:none}.canvas-wrap:fullscreen .stage-caption>span:first-child{font-size:27px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}} 
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="FLUX 홈"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 5h24L4 27h24M4 16h24"/></svg>FLUX<span class="brand-dot">®</span></a>
+    <div class="topline"><span class="live-dot"></span> INDEPENDENT MOTION LAB <span class="slash">/</span> VOL. 001</div>
+    <a class="source-link" href="https://github.com/kimoong1/sejongai-motion" target="_blank" rel="noopener noreferrer">소스 코드 <span>↗</span></a>
+  </header>
+  <div class="workspace">
+    <aside class="sidebar">
+      <div class="sidebar-heading"><span>THE COLLECTION</span><span>01—06</span></div>
+      <nav id="scene-list" aria-label="모션 장면"></nav>
+      <div class="sidebar-note"><span class="tiny-star">✳</span><p>수식에서 움직임으로.<br>당신의 감각으로 완성하세요.</p><span>BUILT TO BE REMIXED.</span></div>
+      <button id="show-help" class="help-button"><span>⌘</span> 키보드 단축키 <span>?</span></button>
+    </aside>
+    <main>
+      <section class="intro">
+        <div><div class="eyebrow">A PLAYGROUND FOR THE MOVING IMAGE</div><h1>Make some<br><em>beautiful noise.</em><span class="heading-star">✳</span></h1></div>
+        <div class="intro-copy"><span class="edition">실시간 모션 그래픽 스튜디오</span><p>움직임을 고르고, 규칙을 바꾸고.<br>당신만의 한 장면을 만드세요.</p><span class="local-badge"><i></i> 모든 작업은 이 브라우저 안에서</span></div>
+      </section>
+      <section class="studio" aria-label="모션 편집기">
+        <div class="stage-panel">
+          <div class="stage-top"><div><span class="live-dot"></span> LIVE CANVAS <span class="stage-top-dim">/</span> <span id="scene-code">EXP. 001</span></div><div><span id="dimensions">1280 × 800</span><button id="fullscreen" class="icon-button" aria-label="전체 화면" title="전체 화면">⛶</button></div></div>
+          <div class="canvas-wrap" id="canvas-wrap"><canvas id="stage" width="1280" height="800" aria-label="선택한 모션 그래픽 미리보기"></canvas><div class="stage-caption"><span id="stage-name">VORTEX<br>STUDY.</span><span class="stage-caption-right">PROCEDURAL<br>ALWAYS IN MOTION ↗</span></div><div class="stage-index">FIG. <span id="stage-index">01</span> <span> / FLUX EXPERIMENTS</span></div><span class="pointer-hint" id="pointer-hint">마우스로 공간을 움직여보세요 ↗</span></div>
+          <div class="transport"><button id="play" class="play-button" aria-label="일시정지" title="재생 / 일시정지 (Space)"><svg id="pause-icon" viewBox="0 0 20 20"><path d="M6 4v12M14 4v12"/></svg><svg id="play-icon" viewBox="0 0 20 20" hidden><path d="m6 3 10 7-10 7z"/></svg></button><button id="restart" class="icon-button restart" aria-label="처음부터 재생" title="처음으로 (R)">↺</button><span id="time-display" class="time-display">00:00</span><div class="scrubber"><input id="timeline" aria-label="타임라인" type="range" min="0" max="8" step="0.001" value="0"><div class="timeline-ticks"><span>0s</span><span>2s</span><span>4s</span><span>6s</span><span>8s</span></div></div><span class="loop-tag">↻ LOOP</span><select id="speed" aria-label="재생 속도"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div>
+        </div>
+        <aside class="inspector" aria-label="장면 설정"><div class="inspector-title">MAKE IT YOURS <span>↗</span></div><div class="control-group"><label for="motion-text">YOUR MESSAGE <span>01</span></label><input id="motion-text" maxlength="24" value="MAKE WAVES" autocomplete="off" spellcheck="false"><p class="control-hint">키네틱 타이포 장면에 적용됩니다.</p></div><div class="control-group"><label>COLOR SYSTEM <span>02</span></label><div id="palettes" class="palettes" role="group" aria-label="색상 팔레트"><button class="swatch acid selected" data-palette="acid" aria-label="Acid 팔레트" aria-pressed="true"><i></i></button><button class="swatch ember" data-palette="ember" aria-label="Ember 팔레트" aria-pressed="false"><i></i></button><button class="swatch ice" data-palette="ice" aria-label="Ice 팔레트" aria-pressed="false"><i></i></button><button class="swatch mono" data-palette="mono" aria-label="Mono 팔레트" aria-pressed="false"><i></i></button></div><div class="palette-caption"><span id="palette-name">ACID / ELECTRIC LIME</span><span id="palette-hex">#D3FB52</span></div></div><div class="control-group"><label for="intensity">INTENSITY <output id="intensity-value">65%</output></label><input id="intensity" type="range" min="0" max="100" value="65"><div class="range-labels"><span>차분하게</span><span>대담하게</span></div></div><div class="control-group"><label for="detail">DETAIL <output id="detail-value">75%</output></label><input id="detail" type="range" min="20" max="100" value="75"><div class="range-labels"><span>미니멀</span><span>디테일</span></div></div><div class="control-group aspect-group"><label for="aspect">FRAME RATIO <span>05</span></label><select id="aspect"><option value="16:10">16:10 — Studio</option><option value="16:9">16:9 — Landscape</option><option value="1:1">1:1 — Square</option><option value="9:16">9:16 — Portrait</option></select></div><button id="shuffle" class="shuffle-button"><span>⤨</span> 새로운 조합 <kbd>S</kbd></button><div class="inspector-bottom"><span class="mini-cross">+</span> SMALL CHANGES. BIG FEELINGS.</div></aside>
+      </section>
+      <section class="scene-detail"><div class="scene-detail-title"><span id="detail-number">01 /</span><div><h2 id="scene-title">Vortex study</h2><p id="scene-subtitle">질서와 혼돈 사이, 수천 개 입자가 그리는 조형.</p></div></div><div class="scene-tags" id="scene-tags"><span>PARTICLES</span><span>3D PROJECTION</span></div></section>
+      <section class="output-bar" aria-label="저장 및 공유"><div class="output-copy"><span class="output-symbol">↳</span><div><strong>좋은 움직임은, 남겨두세요.</strong><span>워터마크 없이. 당신의 다음 프로젝트로.</span></div></div><div class="output-actions"><button id="share" class="subtle-button" title="현재 설정을 URL에 저장하고 복사">링크 공유 ↗</button><details class="preset-menu"><summary>프리셋 <span>⌄</span></summary><div><button id="save-preset">JSON 저장 ↓</button><button id="load-preset">JSON 불러오기 ↑</button></div></details><button id="export-png" class="outline-button">스틸 저장 <span>↓</span></button><button id="export-video" class="primary-button">영상 내보내기 <span>↗</span></button></div></section>
+      <footer><span>FLUX® <span class="footer-muted">/ EXPERIMENTS IN MOTION</span></span><span>6 SCENES. INFINITE POSSIBILITIES.</span><a href="https://github.com/gongnyang/awesome-ai-motion" target="_blank" rel="noopener noreferrer">Inspired by Awesome AI Motion ↗</a></footer>
+    </main>
+  </div>
+  <input type="file" id="preset-file" accept="application/json,.json" hidden>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="help-dialog"><button id="close-help" class="dialog-close" aria-label="닫기">×</button><span class="eyebrow">A FEW SHORTCUTS</span><h2>Keep your flow.</h2><dl><div><dt>재생 / 일시정지</dt><dd><kbd>Space</kbd></dd></div><div><dt>장면 선택</dt><dd><kbd>1</kbd> — <kbd>6</kbd></dd></div><div><dt>새로운 조합</dt><dd><kbd>S</kbd></dd></div><div><dt>타임라인 처음으로</dt><dd><kbd>R</kbd></dd></div><div><dt>단축키 보기</dt><dd><kbd>?</kbd></dd></div></dl><p>시스템의 모션 줄이기 설정이 켜져 있으면 정지 화면으로 시작합니다.</p></dialog>
+  <dialog id="export-dialog"><span class="eyebrow">YOUR MOTION, IN THE MAKING</span><h2>움직임을 담고 있어요.</h2><p id="export-status">8초 분량의 WebM 영상을 실시간으로 저장합니다.</p><progress id="export-progress" value="0" max="1"></progress><button id="cancel-export" class="outline-button">내보내기 취소</button></dialog>
+  <noscript>FLUX는 JavaScript가 필요합니다. 브라우저에서 JavaScript를 허용해 주세요.</noscript>
+  <script type="module">
+const {MotionRenderer}=(()=>{
+const TAU = Math.PI * 2;
+const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+const lerp = (a, b, t) => a + (b - a) * t;
+const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${clamp(a, 0, 1)})`;
+
+const PALETTES = {
+  acid: { a: [211, 255, 98], b: [72, 245, 189], c: [235, 255, 236], d: [29, 97, 83] },
+  ember: { a: [255, 173, 78], b: [255, 78, 92], c: [255, 237, 206], d: [111, 37, 43] },
+  ice: { a: [143, 222, 255], b: [146, 141, 255], c: [235, 248, 255], d: [41, 66, 126] },
+  mono: { a: [239, 243, 232], b: [140, 159, 173], c: [255, 255, 251], d: [69, 81, 90] },
+};
+
+function randomGenerator(seed) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let n = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    n = (n + Math.imul(n ^ (n >>> 7), 61 | n)) ^ n;
+    return ((n ^ (n >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function canvasElement(canvas, w, h) {
+  const element = canvas.ownerDocument.createElement('canvas');
+  element.width = w;
+  element.height = h;
+  return element;
+}
+
+function rotate(x, y, z, rx, ry, rz = 0) {
+  let c = Math.cos(rx), s = Math.sin(rx);
+  let yy = y * c - z * s, zz = y * s + z * c;
+  c = Math.cos(ry); s = Math.sin(ry);
+  const xx = x * c + zz * s;
+  zz = -x * s + zz * c;
+  c = Math.cos(rz); s = Math.sin(rz);
+  return [xx * c - yy * s, xx * s + yy * c, zz];
+}
+
+/**
+ * A dependency-free motion artwork renderer. Every frame is a pure function of
+ * the supplied time and configuration: seeking, screenshots and video export
+ * produce the same artwork as live playback. No previous frame is required.
+ */
+class MotionRenderer {
+  constructor(canvas) {
+    if (!canvas?.getContext) throw new TypeError('MotionRenderer requires a canvas.');
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d', { alpha: false });
+    if (!this.ctx) throw new Error('A 2D Canvas context is required to render motion artwork.');
+    this.dpr = 1;
+    this.destroyed = false;
+    const random = randomGenerator(870264);
+    this.particles = Array.from({ length: 6400 }, (_, i) => ({
+      u: random() * TAU,
+      v: random() * TAU,
+      r: random(),
+      size: random(),
+      phase: random() * TAU,
+      strand: i % 29,
+    }));
+    this.projected = this.particles.map(particle => ({ x: 0, y: 0, z: 0, s: 0, p: particle, light: 0, color: 0 }));
+    this.particleOrder = this.projected.slice();
+    this.stars = Array.from({ length: 260 }, () => ({
+      x: random(), y: random(), r: random(), phase: random() * TAU,
+    }));
+    this.noise = canvasElement(canvas, 96, 96);
+    const nc = this.noise.getContext('2d');
+    const pixels = nc.createImageData(96, 96);
+    for (let i = 0; i < pixels.data.length; i += 4) {
+      const value = Math.floor(random() * 255);
+      pixels.data[i] = value;
+      pixels.data[i + 1] = value;
+      pixels.data[i + 2] = value;
+      pixels.data[i + 3] = 255;
+    }
+    nc.putImageData(pixels, 0, 0);
+    this.noisePattern = this.ctx.createPattern(this.noise, 'repeat');
+    this.sprites = [];
+    this.spritePalette = '';
+  }
+
+  resize(width, height, dpr = 1) {
+    if (this.destroyed) return;
+    this.dpr = clamp(Number(dpr) || 1, 0.5, 4);
+    this.canvas.width = Math.max(1, Math.round(width * this.dpr));
+    this.canvas.height = Math.max(1, Math.round(height * this.dpr));
+  }
+
+  /**
+   * @param {number} timeSeconds Absolute timeline position, in seconds.
+   * @param {{scene?: 'vortex'|'kinetic'|'orbit'|'terrain'|'tunnel'|'bloom',
+   * palette?: 'acid'|'ember'|'ice'|'mono', intensity?: number, detail?: number,
+   * text?: string, pointer?: {x:number,y:number}, reducedMotion?: boolean}} config
+   */
+  render(timeSeconds, config = {}) {
+    if (this.destroyed) return;
+    const ctx = this.ctx;
+    const actualW = this.canvas.width / this.dpr;
+    const actualH = this.canvas.height / this.dpr;
+    if (actualW < 1 || actualH < 1) return;
+    // All drawing dimensions, including line widths and glow sprites, live in
+    // the same virtual space for preview, PNG, and video output.
+    const drawingScale = Math.max(actualW, actualH) / 1280;
+    const w = actualW / drawingScale;
+    const h = actualH / drawingScale;
+    if (w < 1 || h < 1) return;
+    const paletteName = PALETTES[config.palette] ? config.palette : 'acid';
+    const p = PALETTES[paletteName];
+    if (this.spritePalette !== paletteName) this.makeSprites(paletteName, p);
+    const seconds = Number.isFinite(Number(timeSeconds)) ? Number(timeSeconds) : 0;
+    const position = ((seconds % 8) + 8) % 8;
+    // An eased outward-and-return journey is continuous at both ends of the
+    // eight-second loop, including the first derivative (no wraparound flash).
+    const t = config.reducedMotion ? 0 : (1 - Math.cos(TAU * position / 8)) * 4;
+    const intensity = clamp(Number.isFinite(config.intensity) ? config.intensity : 0.72, 0, 1);
+    const detail = clamp(Number.isFinite(config.detail) ? config.detail : 0.72, 0, 1);
+    const pointer = {
+      x: clamp(Number(config.pointer?.x) || 0, -1, 1),
+      y: clamp(Number(config.pointer?.y) || 0, -1, 1),
+    };
+    ctx.setTransform(this.dpr * drawingScale, 0, 0, this.dpr * drawingScale, 0, 0);
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.fillStyle = '#080b10';
+    ctx.fillRect(0, 0, w, h);
+    this.background(w, h, t, p, detail);
+    ctx.save();
+    switch (config.scene) {
+      case 'kinetic': this.kinetic(w, h, t, p, intensity, detail, pointer, config.text); break;
+      case 'orbit': this.orbit(w, h, t, p, intensity, detail, pointer); break;
+      case 'terrain': this.terrain(w, h, t, p, intensity, detail, pointer); break;
+      case 'tunnel': this.tunnel(w, h, t, p, intensity, detail, pointer); break;
+      case 'bloom': this.bloom(w, h, t, p, intensity, detail, pointer); break;
+      default: this.vortex(w, h, t, p, intensity, detail, pointer);
+    }
+    ctx.restore();
+    this.finish(w, h);
+  }
+
+  makeSprites(name, p) {
+    this.spritePalette = name;
+    this.sprites = [p.a, p.b, p.c].map((color) => {
+      const sprite = canvasElement(this.canvas, 64, 64);
+      const ctx = sprite.getContext('2d');
+      const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, rgba(p.c, 0.95));
+      g.addColorStop(0.07, rgba(color, 0.85));
+      g.addColorStop(0.22, rgba(color, 0.28));
+      g.addColorStop(0.55, rgba(color, 0.05));
+      g.addColorStop(1, rgba(color, 0));
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 64, 64);
+      return sprite;
+    });
+  }
+
+  background(w, h, t, p, detail) {
+    const c = this.ctx;
+    const haze = c.createRadialGradient(w * 0.51, h * 0.46, 0, w * 0.51, h * 0.46, Math.max(w, h) * 0.55);
+    haze.addColorStop(0, rgba(p.d, 0.18));
+    haze.addColorStop(0.55, rgba(p.d, 0.035));
+    haze.addColorStop(1, 'rgba(8,11,16,0)');
+    c.fillStyle = haze;
+    c.fillRect(0, 0, w, h);
+    const count = Math.floor(90 + detail * 100);
+    for (let i = 0; i < count; i++) {
+      const s = this.stars[i];
+      const x = ((s.x + Math.sin(t * 0.025 + s.phase) * 0.002) * w);
+      const y = s.y * h;
+      c.fillStyle = rgba(i % 4 ? p.b : p.c, 0.08 + s.r * 0.25);
+      const size = s.r > 0.94 ? 1.5 : 0.75;
+      c.fillRect(x, y, size, size);
+    }
+  }
+
+  finish(w, h) {
+    const c = this.ctx;
+    const v = c.createRadialGradient(w * 0.5, h * 0.5, h * 0.18, w * 0.5, h * 0.5, Math.max(w, h) * 0.66);
+    v.addColorStop(0, 'rgba(0,0,0,0)');
+    v.addColorStop(0.65, 'rgba(0,0,0,0.04)');
+    v.addColorStop(1, 'rgba(0,0,0,0.55)');
+    c.fillStyle = v;
+    c.fillRect(0, 0, w, h);
+    c.globalAlpha = 0.026;
+    c.fillStyle = this.noisePattern;
+    c.fillRect(0, 0, w, h);
+    c.globalAlpha = 1;
+  }
+
+  vortex(w, h, t, p, intensity, detail, pointer) {
+    const c = this.ctx;
+    const cx = w * 0.53 + pointer.x * w * 0.018;
+    const cy = h * 0.49 + pointer.y * h * 0.018;
+    const scale = Math.min(w * 0.215, h * 0.185);
+    const rx = 0.65 + Math.sin(t * 0.16) * 0.11 + pointer.y * 0.17;
+    const ry = -0.18 + Math.sin(t * 0.12) * 0.28 + pointer.x * 0.17;
+    const rz = -0.32 + Math.sin(t * 0.09) * 0.09;
+    const sx = Math.sin(rx), cxr = Math.cos(rx), sy = Math.sin(ry), cyr = Math.cos(ry), sz = Math.sin(rz), cz = Math.cos(rz);
+    const matrix = [cyr * cz, sx * sy * cz - cxr * sz, cxr * sy * cz + sx * sz,
+      cyr * sz, sx * sy * sz + cxr * cz, cxr * sy * sz - sx * cz,
+      -sy, sx * cyr, cxr * cyr];
+    const projected = [0, 0, 0, 0];
+    const project = (u, v, lift = 0) => {
+      const radius = 1.43 + (0.53 + Math.sin(u * 3 + t * 0.18) * 0.045) * Math.cos(v);
+      const x = radius * Math.cos(u), y = radius * Math.sin(u), z = Math.sin(v) * 0.53 + lift;
+      const xx = x * matrix[0] + y * matrix[1] + z * matrix[2];
+      const yy = x * matrix[3] + y * matrix[4] + z * matrix[5];
+      const zz = x * matrix[6] + y * matrix[7] + z * matrix[8];
+      const perspective = 5.8 / (5.8 + zz);
+      projected[0] = cx + xx * scale * perspective;
+      projected[1] = cy + yy * scale * perspective;
+      projected[2] = zz;
+      projected[3] = perspective;
+      return projected;
+    };
+    const aura = c.createRadialGradient(cx, cy, scale * 0.4, cx, cy, scale * 2.35);
+    aura.addColorStop(0, rgba(p.b, 0));
+    aura.addColorStop(0.53, rgba(p.b, 0.045 + intensity * 0.035));
+    aura.addColorStop(0.8, rgba(p.a, 0.018));
+    aura.addColorStop(1, rgba(p.a, 0));
+    c.fillStyle = aura;
+    c.fillRect(0, 0, w, h);
+
+    // Continuous windings make the cloud read as a woven surface, not a sprite cloud.
+    const ribbons = Math.floor(13 + detail * 12);
+    for (let j = 0; j < ribbons; j++) {
+      c.beginPath();
+      const phase = j / ribbons * TAU;
+      for (let k = 0; k <= 210; k++) {
+        const u = k / 210 * TAU;
+        const v = u * 3 + phase + t * (0.11 + intensity * 0.13);
+        const q = project(u, v);
+        k ? c.lineTo(q[0], q[1]) : c.moveTo(q[0], q[1]);
+      }
+      c.lineWidth = j % 5 === 0 ? 1.4 : 0.8;
+      c.strokeStyle = rgba(j % 3 ? p.b : p.a, j % 5 === 0 ? 0.44 : 0.19);
+      c.stroke();
+    }
+
+    const points = this.particleOrder;
+    const count = Math.floor(2700 + detail * 3700);
+    points.length = count;
+    for (let i = 0; i < count; i++) {
+      const particle = this.particles[i];
+      const u = particle.u + t * (0.035 + intensity * 0.045);
+      // A broad distribution is pinched into fine helical bands at the lit edge.
+      const v = particle.v + Math.sin(u * 3 + particle.phase) * 0.11 + t * 0.17;
+      const q = project(u, v, (particle.r - 0.5) * 0.045);
+      const light = (Math.cos(v - 0.8) + 1) * 0.5;
+      const point = this.projected[i];
+      point.x = q[0]; point.y = q[1]; point.z = q[2]; point.s = q[3]; point.light = light;
+      point.color = Math.sin(u * 1.5 + v) > 0.36 ? 0 : 1;
+      points[i] = point;
+    }
+    points.sort((a, b) => b.z - a.z);
+    const particleColors = [p.a, p.b, p.c].map(color => Array.from({ length: 16 }, (_, i) => rgba(color, i / 15)));
+    for (let i = 0; i < points.length; i++) {
+      const q = points[i];
+      const front = clamp((1.9 - q.z) / 3.8, 0, 1);
+      const opacity = 0.4 + front * 0.38 + q.light * 0.2;
+      const radius = (1.2 + q.p.size * 2.2) * q.s * (0.8 + intensity * 0.4);
+      const colorIndex = q.light > 0.45 && q.p.size > 0.35 ? 2 : q.color;
+      c.fillStyle = particleColors[colorIndex][Math.min(15, Math.floor(opacity * 15))];
+      c.fillRect(q.x - radius / 2, q.y - radius / 2, radius, radius);
+      if (q.p.size > 0.94 && q.light > 0.25) {
+        const size = (20 + q.p.r * 20) * q.s;
+        c.globalAlpha = 0.38 + front * 0.45;
+        c.drawImage(this.sprites[q.color], q.x - size / 2, q.y - size / 2, size, size);
+      }
+    }
+    c.globalAlpha = 1;
+
+    // Sparse satellites and a quiet equatorial reference add scale.
+    c.save();
+    c.translate(cx, cy);
+    c.rotate(-0.27);
+    c.strokeStyle = rgba(p.b, 0.14);
+    c.lineWidth = 0.7;
+    c.beginPath(); c.ellipse(0, 0, scale * 2.4, scale * 0.66, 0, 0.12, Math.PI * 0.92); c.stroke();
+    c.restore();
+    for (let i = 0; i < 8; i++) {
+      const angle = t * 0.06 + i * 2.39996;
+      const q = project(angle, i * 0.8, Math.sin(i * 4) * 0.8);
+      const size = 7;
+      c.strokeStyle = rgba(p.c, 0.24);
+      c.lineWidth = 0.6;
+      c.beginPath(); c.moveTo(q[0] - size, q[1]); c.lineTo(q[0] + size, q[1]); c.moveTo(q[0], q[1] - size); c.lineTo(q[0], q[1] + size); c.stroke();
+    }
+  }
+
+  kinetic(w, h, t, p, intensity, detail, pointer, text) {
+    const c = this.ctx;
+    const raw = String(text || 'MAKE IT MOVE').replace(/[\u0000-\u001f]/g, ' ').trim().toUpperCase().slice(0, 42) || 'MAKE IT MOVE';
+    let lines = raw.split(/\s+/);
+    if (lines.length > 3) {
+      const half = Math.ceil(lines.length / 2);
+      lines = [lines.slice(0, half).join(' '), lines.slice(half).join(' ')];
+    }
+    if (lines.length === 3 && raw.length < 15) lines = [lines[0], lines.slice(1).join(' ')];
+    let size = h * (lines.length === 1 ? 0.42 : lines.length === 2 ? 0.285 : 0.215);
+    const family = '"Arial Black", "Segoe UI", Arial, sans-serif';
+    c.font = `900 ${size}px ${family}`;
+    const widest = Math.max(...lines.map(line => c.measureText(line).width));
+    if (widest > w * 0.84) size *= w * 0.84 / widest;
+    const lineHeight = size * 0.92;
+    const blockHeight = lineHeight * lines.length;
+    const centerX = w * 0.5 + pointer.x * w * 0.014;
+    const baseline = h * 0.5 - blockHeight / 2 + size * 0.78;
+
+    // A huge fine outline frames the type while the diagonal rules imply velocity.
+    c.save();
+    c.translate(w / 2, h / 2);
+    c.rotate(-0.12 + Math.sin(t * 0.16) * 0.025);
+    for (let i = -5; i < 6; i++) {
+      const y = i * h * 0.18 + Math.sin(t * 0.35) * h * 0.02;
+      c.strokeStyle = rgba(p.b, i === 0 ? 0.12 : 0.045);
+      c.lineWidth = 0.6;
+      c.beginPath(); c.moveTo(-w, y); c.lineTo(w, y); c.stroke();
+    }
+    c.strokeStyle = rgba(p.a, 0.14);
+    c.lineWidth = 1;
+    c.strokeRect(-w * 0.37, -h * 0.34, w * 0.74, h * 0.68);
+    c.restore();
+
+    c.font = `900 ${size}px ${family}`;
+    c.textAlign = 'center';
+    c.textBaseline = 'alphabetic';
+    const motion = (0.2 + intensity * 0.8);
+    for (let row = 0; row < lines.length; row++) {
+      const y = baseline + row * lineHeight;
+      const drift = Math.sin(t * 0.67 + row * 1.2) * size * 0.025 * motion;
+      const x = centerX + drift;
+      // Thin, dimensional echoes remain continuous beneath the cut strips.
+      for (let layer = 5; layer > 0; layer--) {
+        c.lineWidth = 0.6;
+        c.strokeStyle = rgba(p.b, 0.035 + (6 - layer) * 0.018);
+        c.strokeText(lines[row], x - layer * size * 0.018, y + layer * size * 0.018);
+      }
+      const slices = 12 + Math.floor(detail * 6);
+      for (let slice = 0; slice < slices; slice++) {
+        const stripTop = y - size * 0.85 + slice / slices * size;
+        const stripHeight = size / slices + 1;
+        const phase = t * 0.9 + row * 1.8 + slice * 0.54;
+        const offset = Math.pow(Math.sin(phase), 3) * size * 0.035 * motion;
+        c.save();
+        c.beginPath(); c.rect(0, stripTop, w, stripHeight); c.clip();
+        c.fillStyle = slice === 4 || slice === 5 ? rgba(p.a, 1) : rgba(p.c, 0.96);
+        c.fillText(lines[row], x + offset, y);
+        if (slice === 4 || slice === 5) {
+          c.fillStyle = rgba(p.b, 0.22);
+          c.fillText(lines[row], x + offset + size * 0.035, y);
+        }
+        c.restore();
+      }
+    }
+
+    // A bespoke star acts as a counterweight to the rectangular type.
+    const starX = w * 0.84, starY = h * 0.22;
+    const r = Math.min(w, h) * 0.045;
+    c.save(); c.translate(starX, starY); c.rotate(t * 0.18);
+    c.fillStyle = rgba(p.a, 0.95); c.beginPath();
+    for (let i = 0; i < 24; i++) {
+      const angle = i / 24 * TAU;
+      const rad = i % 2 ? r * 0.25 : r;
+      i ? c.lineTo(Math.cos(angle) * rad, Math.sin(angle) * rad) : c.moveTo(Math.cos(angle) * rad, Math.sin(angle) * rad);
+    }
+    c.closePath(); c.fill(); c.restore();
+    c.fillStyle = rgba(p.b, 0.5);
+    const bars = 22;
+    for (let i = 0; i < bars; i++) {
+      const bh = (4 + (Math.sin(i * 1.79 + t * 0.6) + 1) * 8) * h / 720;
+      c.fillRect(w * 0.12 + i * 4 * w / 1200, h * 0.83 - bh, w / 1200 * 1.5, bh);
+    }
+  }
+
+  orbit(w, h, t, p, intensity, detail, pointer) {
+    const c = this.ctx;
+    const cx = w * 0.5 + pointer.x * w * 0.025;
+    const cy = h * 0.5 + pointer.y * h * 0.025;
+    const unit = Math.min(w * 0.205, h * 0.32);
+    const globe = unit * 0.58;
+    const haze = c.createRadialGradient(cx, cy, globe * 0.6, cx, cy, unit * 2.45);
+    haze.addColorStop(0, rgba(p.b, 0.09));
+    haze.addColorStop(0.35, rgba(p.b, 0.045));
+    haze.addColorStop(1, rgba(p.b, 0));
+    c.fillStyle = haze; c.fillRect(0, 0, w, h);
+    const project = (angle, orbit, radiusOffset = 0) => {
+      const r = 1.65 + orbit * 0.145 + radiusOffset;
+      const q = rotate(Math.cos(angle) * r, Math.sin(angle) * r, 0,
+        0.34 + orbit * 0.42 + pointer.y * 0.12,
+        -0.46 + orbit * 0.27 + Math.sin(t * 0.1) * 0.11,
+        -0.42 + orbit * 0.24 + pointer.x * 0.12);
+      const f = 5.5 / (5.5 + q[2]);
+      return [cx + q[0] * unit * f, cy + q[1] * unit * f, q[2], f];
+    };
+    const orbits = 5;
+    const drawPaths = (front) => {
+      for (let j = 0; j < orbits; j++) {
+        c.strokeStyle = rgba(j % 2 ? p.a : p.b, front ? 0.16 : 0.075);
+        c.lineWidth = 0.65;
+        c.beginPath();
+        let drawing = false;
+        for (let k = 0; k <= 240; k++) {
+          const q = project(k / 240 * TAU, j);
+          if ((q[2] <= 0) === front) {
+            drawing ? c.lineTo(q[0], q[1]) : c.moveTo(q[0], q[1]);
+            drawing = true;
+          } else drawing = false;
+        }
+        c.stroke();
+      }
+      const satellites = 9 + Math.floor(detail * 8);
+      for (let i = 0; i < satellites; i++) {
+        const orbit = i % orbits;
+        const speed = (0.1 + (i % 4) * 0.017) * (0.6 + intensity * 0.8);
+        const head = t * speed + i * 2.39996;
+        const length = 0.56 + (i % 3) * 0.21;
+        const steps = 35 + Math.floor(detail * 22);
+        const color = orbit % 2 ? p.a : p.b;
+        for (let k = 0; k < steps; k++) {
+          const a = head - length * (1 - k / steps);
+          const q0 = project(a, orbit, (i % 3 - 1) * 0.018);
+          const q1 = project(a + length / steps, orbit, (i % 3 - 1) * 0.018);
+          if ((q0[2] <= 0) !== front) continue;
+          const fade = (k + 1) / steps;
+          c.strokeStyle = rgba(color, fade * fade * (front ? 0.84 : 0.24));
+          c.lineWidth = (0.45 + fade * 1.45) * q0[3];
+          c.beginPath(); c.moveTo(q0[0], q0[1]); c.lineTo(q1[0], q1[1]); c.stroke();
+        }
+        const q = project(head, orbit, (i % 3 - 1) * 0.018);
+        if ((q[2] <= 0) === front) {
+          const size = (front ? 26 : 13) * q[3];
+          c.globalAlpha = front ? 0.95 : 0.3;
+          c.drawImage(this.sprites[orbit % 2 ? 0 : 1], q[0] - size / 2, q[1] - size / 2, size, size);
+          c.globalAlpha = 1;
+          c.fillStyle = rgba(p.c, front ? 0.95 : 0.3);
+          c.beginPath(); c.arc(q[0], q[1], front ? 1.25 : 0.7, 0, TAU); c.fill();
+        }
+      }
+    };
+    drawPaths(false);
+
+    const aura = c.createRadialGradient(cx, cy, globe * 0.8, cx, cy, globe * 1.3);
+    aura.addColorStop(0, rgba(p.b, 0));
+    aura.addColorStop(0.68, rgba(p.b, 0.08));
+    aura.addColorStop(0.83, rgba(p.b, 0.1));
+    aura.addColorStop(1, rgba(p.b, 0));
+    c.fillStyle = aura; c.beginPath(); c.arc(cx, cy, globe * 1.3, 0, TAU); c.fill();
+    const body = c.createRadialGradient(cx - globe * 0.4, cy - globe * 0.45, 0, cx, cy, globe);
+    body.addColorStop(0, '#162628'); body.addColorStop(0.6, '#0d181d'); body.addColorStop(1, '#080d13');
+    c.fillStyle = body; c.beginPath(); c.arc(cx, cy, globe, 0, TAU); c.fill();
+    c.save(); c.beginPath(); c.arc(cx, cy, globe, 0, TAU); c.clip();
+    c.strokeStyle = rgba(p.b, 0.15); c.lineWidth = 0.65;
+    for (let i = -4; i <= 4; i++) {
+      const f = i / 5;
+      const r = Math.sqrt(1 - f * f) * globe;
+      c.beginPath(); c.ellipse(cx, cy + f * globe, r, r * 0.18, -0.18, 0, TAU); c.stroke();
+    }
+    for (let i = 0; i < 8; i++) {
+      const width = Math.abs(Math.cos(i / 8 * Math.PI + t * 0.06)) * globe;
+      c.beginPath(); c.ellipse(cx, cy, Math.max(width, 0.1), globe, -0.18, 0, TAU); c.stroke();
+    }
+    c.restore();
+    c.strokeStyle = rgba(p.b, 0.45); c.lineWidth = 0.85;
+    c.beginPath(); c.arc(cx, cy, globe, Math.PI * 0.92, Math.PI * 1.86); c.stroke();
+    drawPaths(true);
+
+    // Astronomical registration marks sit well outside the illuminated object.
+    c.strokeStyle = rgba(p.c, 0.15); c.lineWidth = 0.6;
+    for (let i = 0; i < 4; i++) {
+      const x = cx + (i % 2 ? 1 : -1) * unit * 2.25;
+      const y = cy + (i > 1 ? 1 : -1) * unit * 0.94;
+      c.beginPath(); c.moveTo(x - 5, y); c.lineTo(x + 5, y); c.moveTo(x, y - 5); c.lineTo(x, y + 5); c.stroke();
+    }
+  }
+
+  terrain(w, h, t, p, intensity, detail, pointer) {
+    const c = this.ctx;
+    const horizon = h * 0.24 + pointer.y * h * 0.016;
+    const glow = c.createRadialGradient(w * 0.54, horizon + h * 0.03, 0, w * 0.54, horizon + h * 0.03, h * 0.45);
+    glow.addColorStop(0, rgba(p.b, 0.16));
+    glow.addColorStop(0.4, rgba(p.b, 0.045));
+    glow.addColorStop(1, rgba(p.b, 0));
+    c.fillStyle = glow; c.fillRect(0, 0, w, h);
+    const cols = 96 + Math.floor(detail * 36);
+    const rows = 54 + Math.floor(detail * 32);
+    const amplitude = 0.65 + intensity * 0.75;
+    const terrainHeight = (x, z) => {
+      const ridge = Math.exp(-((x - Math.sin(t * 0.16) * 0.5) ** 2 / 4.3 + (z - 3.7) ** 2 / 8.4)) * 1.62;
+      const wave = Math.sin(x * 1.1 + z * 0.82 + t * 0.28) * 0.36;
+      const fine = Math.sin(Math.hypot(x * 0.85, z - 3.8) * 3.1 - t * 0.48) * 0.14;
+      return (ridge + wave + fine) * amplitude;
+    };
+    const project = (x, z) => {
+      const perspective = 1 / (0.7 + z * 0.16);
+      return [w * 0.5 + (x + pointer.x * 0.25) * w * 0.087 * perspective,
+        horizon + (8 - z) * h * 0.077 * perspective - terrainHeight(x, z) * h * 0.095 * perspective];
+    };
+
+    // The horizon's elliptical contour is deliberately incomplete, like a plotting instrument.
+    c.strokeStyle = rgba(p.a, 0.14); c.lineWidth = 0.75;
+    c.beginPath(); c.ellipse(w * 0.5, horizon + h * 0.005, w * 0.28, h * 0.052, -0.04, Math.PI * 1.03, Math.PI * 1.98); c.stroke();
+    const grid = [];
+    for (let row = 0; row < rows; row++) {
+      const z = 8 - row / (rows - 1) * 8;
+      const depth = row / (rows - 1);
+      const points = [];
+      for (let col = 0; col <= cols; col++) points.push(project(-7.8 + col / cols * 15.6, z));
+      grid.push(points);
+      c.beginPath();
+      for (let col = 0; col <= cols; col++) col ? c.lineTo(...points[col]) : c.moveTo(...points[col]);
+      c.strokeStyle = rgba(row % 7 === 0 ? p.a : p.b, (0.12 + depth * 0.5) * (row % 7 === 0 ? 1.25 : 1));
+      c.lineWidth = row % 7 === 0 ? 1.15 : 0.68;
+      c.stroke();
+    }
+    c.lineWidth = 0.55;
+    for (let col = 0; col <= cols; col += 4) {
+      c.beginPath();
+      for (let row = 0; row < rows; row++) row ? c.lineTo(...grid[row][col]) : c.moveTo(...grid[row][col]);
+      c.strokeStyle = rgba(p.b, col % 16 === 0 ? 0.22 : 0.075);
+      c.stroke();
+    }
+
+    const nodes = 38 + Math.floor(detail * 50);
+    for (let i = 0; i < nodes; i++) {
+      const particle = this.particles[i];
+      const x = (particle.r - 0.5) * 13;
+      const z = 0.8 + ((particle.u / TAU * 6.4 + t * 0.025) % 6.4);
+      const q = project(x, z);
+      const size = particle.size > 0.7 ? 15 : 7;
+      c.globalAlpha = 0.3 + particle.size * 0.45;
+      c.drawImage(this.sprites[i % 2], q[0] - size / 2, q[1] - size / 2, size, size);
+      c.globalAlpha = 1;
+      c.fillStyle = rgba(p.c, 0.75);
+      c.fillRect(q[0] - 0.6, q[1] - 0.6, 1.2, 1.2);
+    }
+    const mist = c.createLinearGradient(0, horizon - 30, 0, horizon + h * 0.2);
+    mist.addColorStop(0, 'rgba(8,11,16,0.75)'); mist.addColorStop(1, 'rgba(8,11,16,0)');
+    c.fillStyle = mist; c.fillRect(0, 0, w, horizon + h * 0.2);
+  }
+
+  tunnel(w, h, t, p, intensity, detail, pointer) {
+    const c = this.ctx;
+    const cx = w * 0.5 + pointer.x * w * 0.045;
+    const cy = h * 0.5 + pointer.y * h * 0.045;
+    const radius = Math.max(w * 0.58, h * 0.86);
+    const vertices = [[-0.74, -1], [0.74, -1], [1, -0.74], [1, 0.74], [0.74, 1], [-0.74, 1], [-1, 0.74], [-1, -0.74]];
+    const depthCount = 27 + Math.floor(detail * 15);
+    const phase = ((t * (0.24 + intensity * 0.35)) % 1 + 1) % 1;
+    const rotation = Math.sin(t * 0.115) * 0.14 + pointer.x * 0.045;
+    const project = (point, depth) => {
+      const scale = 0.15 / (depth + 0.07);
+      const angle = rotation + depth * (0.8 + Math.sin(t * 0.09) * 0.25);
+      const cr = Math.cos(angle), sr = Math.sin(angle);
+      const x = point[0] * cr - point[1] * sr;
+      const y = point[0] * sr + point[1] * cr;
+      return [cx + x * radius * scale, cy + y * radius * scale * 0.78];
+    };
+    const core = c.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w, h) * 0.55);
+    core.addColorStop(0, rgba(p.b, 0.16)); core.addColorStop(0.23, rgba(p.b, 0.075)); core.addColorStop(1, rgba(p.b, 0));
+    c.fillStyle = core; c.fillRect(0, 0, w, h);
+
+    // Long rails tie the portals together; each line is an actual perspective trajectory.
+    for (let i = 0; i < vertices.length; i++) {
+      c.beginPath();
+      for (let k = 0; k <= 100; k++) {
+        const depth = 1 - k / 100;
+        const q = project(vertices[i], depth);
+        k ? c.lineTo(q[0], q[1]) : c.moveTo(q[0], q[1]);
+      }
+      c.strokeStyle = rgba(i % 2 ? p.a : p.b, 0.18);
+      c.lineWidth = 0.7; c.stroke();
+    }
+
+    for (let i = depthCount; i >= 0; i--) {
+      const depth = (i + 1 - phase) / depthCount;
+      const front = 1 - depth;
+      const opacity = clamp((0.12 + front * 0.56) * Math.min(1, depth * 20), 0, 1);
+      const points = vertices.map(point => project(point, depth));
+      c.beginPath();
+      points.forEach((point, index) => index ? c.lineTo(...point) : c.moveTo(...point));
+      c.closePath();
+      c.lineWidth = i % 5 === 0 ? 1.8 : 0.75;
+      c.strokeStyle = rgba(i % 5 === 0 ? p.a : p.b, opacity * (i % 5 === 0 ? 1 : 0.55));
+      c.stroke();
+      if (i % 5 === 0) {
+        c.lineWidth = 6 + front * 4;
+        c.strokeStyle = rgba(p.b, opacity * 0.035); c.stroke();
+      }
+      // Carefully placed bright joints, rather than full-frame glow, retain crisp edges.
+      if (i % 3 === 0) {
+        for (let j = 0; j < points.length; j += 2) {
+          const a = points[j], b = points[(j + 1) % points.length];
+          c.strokeStyle = rgba(p.c, opacity * 0.85); c.lineWidth = 1.3;
+          c.beginPath(); c.moveTo(a[0], a[1]); c.lineTo(lerp(a[0], b[0], 0.12), lerp(a[1], b[1], 0.12)); c.stroke();
+          if (depth > 0.12 && depth < 0.68) {
+            const size = 10;
+            c.globalAlpha = opacity * 0.55;
+            c.drawImage(this.sprites[j % 3], a[0] - size / 2, a[1] - size / 2, size, size);
+            c.globalAlpha = 1;
+          }
+        }
+      }
+    }
+
+    // Fine longitudinal ticks travel slowly through the architecture.
+    const marks = 60 + Math.floor(detail * 70);
+    for (let i = 0; i < marks; i++) {
+      const particle = this.particles[i];
+      const edge = i % 8;
+      const a = vertices[edge], b = vertices[(edge + 1) % 8];
+      const point = [lerp(a[0], b[0], particle.r), lerp(a[1], b[1], particle.r)];
+      const depth = 0.1 + ((particle.u / TAU + t * 0.035) % 1) * 0.85;
+      const q = project(point, depth), q2 = project(point, depth + 0.006);
+      c.strokeStyle = rgba(i % 3 ? p.b : p.a, (1 - depth) * 0.45);
+      c.lineWidth = 0.85;
+      c.beginPath(); c.moveTo(...q); c.lineTo(...q2); c.stroke();
+    }
+    c.strokeStyle = rgba(p.c, 0.4); c.lineWidth = 0.75;
+    c.beginPath(); c.moveTo(cx - 4, cy); c.lineTo(cx + 4, cy); c.moveTo(cx, cy - 4); c.lineTo(cx, cy + 4); c.stroke();
+  }
+
+  bloom(w, h, t, p, intensity, detail, pointer) {
+    const c = this.ctx;
+    const cx = w * 0.5 + pointer.x * w * 0.025;
+    const cy = h * 0.5 + pointer.y * h * 0.025;
+    const radius = Math.min(w * 0.32, h * 0.38);
+    const breath = 1 + Math.sin(t * 0.42) * 0.035 * intensity;
+    const glow = c.createRadialGradient(cx, cy, 0, cx, cy, radius * 1.55);
+    glow.addColorStop(0, rgba(p.b, 0.11)); glow.addColorStop(0.55, rgba(p.a, 0.035)); glow.addColorStop(1, rgba(p.a, 0));
+    c.fillStyle = glow; c.fillRect(0, 0, w, h);
+
+    c.save(); c.translate(cx, cy);
+    c.rotate(-Math.PI * 0.5 + t * 0.035);
+    const petalCount = 11;
+    const layers = 3 + Math.round(detail);
+    for (let layer = 0; layer < layers; layer++) {
+      const layerScale = (1 - layer * 0.16) * breath;
+      const layerRotation = layer * 0.31 + Math.sin(t * 0.21 + layer) * 0.09 * intensity;
+      for (let j = 0; j < petalCount; j++) {
+        const angle = j / petalCount * TAU + layerRotation;
+        const wave = Math.sin(t * 0.35 + j * 0.55 + layer * 1.3);
+        const length = radius * layerScale * (0.94 + wave * 0.055 * intensity);
+        const width = length * (0.27 + layer * 0.018);
+        const root = radius * (0.07 + layer * 0.012);
+        const fold = Math.sin(t * 0.28 + j * 0.7) * width * 0.23 * intensity;
+        c.save(); c.rotate(angle);
+        // Each leaf has a broad translucent face and a tightly folded reflective rim.
+        const gradient = c.createLinearGradient(root, -width, length, width * 0.5);
+        gradient.addColorStop(0, rgba(p.b, 0.015));
+        gradient.addColorStop(0.3, rgba(j % 2 ? p.b : p.a, 0.08));
+        gradient.addColorStop(0.58, rgba(p.b, 0.19 + layer * 0.015));
+        gradient.addColorStop(0.85, rgba(p.a, 0.07));
+        gradient.addColorStop(1, rgba(p.c, 0.22));
+        c.beginPath();
+        c.moveTo(root, 0);
+        c.bezierCurveTo(length * 0.32, -width * 0.36, length * 0.68, -width + fold, length, 0);
+        c.bezierCurveTo(length * 0.79, width * 0.66, length * 0.35, width * 0.75, root, 0);
+        c.closePath();
+        c.globalCompositeOperation = 'screen';
+        c.fillStyle = gradient; c.fill();
+        c.strokeStyle = rgba(j % 2 ? p.b : p.a, 0.32 + layer * 0.045); c.lineWidth = 0.85; c.stroke();
+        c.beginPath(); c.moveTo(root, 0);
+        c.bezierCurveTo(length * 0.36, width * 0.12, length * 0.74, -width * 0.3 + fold, length, 0);
+        c.strokeStyle = rgba(p.c, 0.4); c.lineWidth = 0.55; c.stroke();
+        const veins = 4 + Math.floor(detail * 3);
+        for (let k = 1; k < veins; k++) {
+          const v = k / veins;
+          c.beginPath(); c.moveTo(root, 0);
+          c.bezierCurveTo(length * 0.3, -width * 0.2 * v, length * 0.7, (-width + fold) * v, length, 0);
+          c.strokeStyle = rgba(p.b, 0.035 + v * 0.045); c.lineWidth = 0.45; c.stroke();
+        }
+        c.restore();
+      }
+    }
+    c.restore();
+    c.globalCompositeOperation = 'source-over';
+
+    // A delicate orbital rosette surrounds the glass form without competing with it.
+    c.strokeStyle = rgba(p.b, 0.2); c.lineWidth = 0.65; c.beginPath();
+    for (let k = 0; k <= 400; k++) {
+      const angle = k / 400 * TAU;
+      const r = radius * (1.08 + Math.cos(angle * 11 + t * 0.11) * 0.016);
+      const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
+      k ? c.lineTo(x, y) : c.moveTo(x, y);
+    }
+    c.closePath(); c.stroke();
+    const coreR = radius * 0.105;
+    const core = c.createRadialGradient(cx - coreR * 0.35, cy - coreR * 0.4, 0, cx, cy, coreR);
+    core.addColorStop(0, rgba(p.c, 0.95)); core.addColorStop(0.13, rgba(p.a, 0.7));
+    core.addColorStop(0.45, rgba(p.b, 0.24)); core.addColorStop(0.9, '#101c20'); core.addColorStop(1, rgba(p.b, 0.4));
+    c.fillStyle = core; c.beginPath(); c.arc(cx, cy, coreR, 0, TAU); c.fill();
+    c.strokeStyle = rgba(p.c, 0.45); c.lineWidth = 0.6;
+    c.beginPath(); c.arc(cx, cy, coreR * 1.16, 0, TAU); c.stroke();
+    for (let i = 0; i < 35 + detail * 25; i++) {
+      const particle = this.particles[i];
+      const angle = particle.u + t * 0.026;
+      const r = radius * (1.15 + particle.r * 0.42);
+      const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
+      c.fillStyle = rgba(i % 2 ? p.b : p.a, 0.15 + particle.size * 0.4);
+      c.fillRect(x, y, particle.size > 0.8 ? 1.5 : 0.7, particle.size > 0.8 ? 1.5 : 0.7);
+    }
+  }
+
+  destroy() {
+    this.destroyed = true;
+    this.sprites = [];
+    this.particles = [];
+    this.projected = [];
+    this.particleOrder = [];
+    this.stars = [];
+    this.noisePattern = null;
+    this.noise = null;
+  }
+}
+
+return {MotionRenderer};})();
+const {DEFAULTS,SCENES,PALETTES,DURATION,normalizePreset,serializePreset,encodePreset,decodePreset,outputSize}=(()=>{
+/** Pure, validated preset format. No executable code or remote assets in presets. */
+const SCENES = ['vortex', 'kinetic', 'orbit', 'terrain', 'tunnel', 'bloom'];
+const PALETTES = ['acid', 'ember', 'ice', 'mono'];
+const ASPECTS = ['16:10', '16:9', '1:1', '9:16'];
+const DURATION = 8;
+const DEFAULTS = Object.freeze({scene:'vortex', palette:'acid', intensity:0.65, detail:0.75, text:'MAKE WAVES', aspect:'16:10', speed:1});
+const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
+function normalizePreset(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError('올바른 FLUX 프리셋 파일이 아닙니다.');
+  if (value.version !== undefined && value.version !== 1) throw new TypeError('지원하지 않는 프리셋 버전입니다.');
+  const source = value.config && typeof value.config === 'object' ? value.config : value;
+  const numeric = (name, min, max) => typeof source[name] === 'number' && Number.isFinite(source[name]) ? clamp(source[name],min,max) : DEFAULTS[name];
+  return {
+    scene:SCENES.includes(source.scene) ? source.scene : DEFAULTS.scene,
+    palette:PALETTES.includes(source.palette) ? source.palette : DEFAULTS.palette,
+    intensity:numeric('intensity',0,1), detail:numeric('detail',0.2,1),
+    text:typeof source.text === 'string' ? Array.from(source.text.replace(/[\u0000-\u001f\u007f]/g,'')).slice(0,24).join('') : DEFAULTS.text,
+    aspect:ASPECTS.includes(source.aspect) ? source.aspect : DEFAULTS.aspect,
+    speed:[0.5,1,1.5,2].includes(source.speed) ? source.speed : DEFAULTS.speed
+  };
+}
+function serializePreset(config) { return {app:'FLUX', version:1, config:normalizePreset(config)}; }
+function encodePreset(config) { return '#preset=' + encodeURIComponent(JSON.stringify(serializePreset(config))); }
+function decodePreset(hash) {
+  if (!hash || !hash.startsWith('#preset=')) return null;
+  if (hash.length > 8192) throw new RangeError('프리셋 링크가 너무 깁니다.');
+  return normalizePreset(JSON.parse(decodeURIComponent(hash.slice(8))));
+}
+function outputSize(aspect, longEdge = 1280) {
+  if (!ASPECTS.includes(aspect)) throw new TypeError('지원하지 않는 화면 비율입니다.');
+  const [w,h]=aspect.split(':').map(Number);
+  // Even dimensions are compatible with browser video codecs.
+  return w>=h ? [longEdge,Math.round(longEdge*h/w/2)*2] : [Math.round(longEdge*w/h/2)*2,longEdge];
+}
+
+return {DEFAULTS,SCENES,PALETTES,DURATION,normalizePreset,serializePreset,encodePreset,decodePreset,outputSize};})();
+
+const $ = (id) => document.getElementById(id);
+const icons = [
+  '<ellipse cx="16" cy="16" rx="14" ry="6" transform="rotate(-35 16 16)"/><ellipse cx="16" cy="16" rx="14" ry="10" transform="rotate(-35 16 16)"/><circle cx="16" cy="16" r="4"/>',
+  '<path d="M3 5h26M16 5v23M8 28h16M4 9V3h24v6"/><path d="M6 14h20" stroke-dasharray="1 3"/>',
+  '<circle cx="16" cy="16" r="5"/><ellipse cx="16" cy="16" rx="15" ry="7" transform="rotate(-40 16 16)"/><ellipse cx="16" cy="16" rx="15" ry="7" transform="rotate(40 16 16)"/>',
+  '<path d="m2 24 7-6 7 3 7-8 7 5M2 19l7-6 7 3 7-8 7 5M2 14l7-6 7 3 7-8 7 5M2 29l7-6 7 3 7-8 7 5"/>',
+  '<path d="M2 2h28v28H2zM7 7h18v18H7zM12 12h8v8h-8zM2 2l10 10M30 2 20 12M30 30 20 20M2 30l10-10"/>',
+  '<path d="M16 2c12 0 12 28 0 28S4 2 16 2z"/><path d="M2 16c0-12 28-12 28 0S2 28 2 16z"/><path d="M6 6c8-8 28 12 20 20S-2 14 6 6z"/><path d="M26 6c8 8-12 28-20 20S18-2 26 6z"/>'
+];
+const scenes = [
+  {name:'Vortex study',short:'Vortex study',label:'PARTICLE SCULPTURE',canvas:'VORTEX\nSTUDY.',description:'질서와 혼돈 사이, 수천 개 입자가 그리는 조형.',tags:['PARTICLES','3D PROJECTION']},
+  {name:'Type in motion',short:'Type in motion',label:'KINETIC TYPOGRAPHY',canvas:'TYPE IN\nMOTION.',description:'읽히는 문장에서 느껴지는 움직임으로.',tags:['KINETIC TYPE','YOUR MESSAGE']},
+  {name:'Orbital mechanics',short:'Orbital mechanics',label:'CELESTIAL CHOREOGRAPHY',canvas:'ORBITAL\nMECHANICS.',description:'보이지 않는 궤도를 따라 빛이 흐릅니다.',tags:['LIGHT TRAILS','ORBITAL']},
+  {name:'Wave terrain',short:'Wave terrain',label:'GENERATIVE LANDSCAPE',canvas:'WAVE\nTERRAIN.',description:'파형이 지형이 되고, 지형이 다시 파형이 되는 순간.',tags:['TOPOGRAPHY','SINE FIELD']},
+  {name:'Infinite tunnel',short:'Infinite tunnel',label:'PERSPECTIVE EXPERIMENT',canvas:'INFINITE\nTUNNEL.',description:'끝없이 이어지는 공간을 통과하는 감각.',tags:['PERSPECTIVE','DEPTH FIELD']},
+  {name:'Radial bloom',short:'Radial bloom',label:'ORGANIC GEOMETRY',canvas:'RADIAL\nBLOOM.',description:'하나의 규칙에서 피어나는 유기적인 형태.',tags:['GENERATIVE','RADIAL FORM']}
+];
+const paletteLabels = {acid:['ACID / ELECTRIC LIME','#D3FB52'],ember:['EMBER / SOLAR CORAL','#FF8855'],ice:['ICE / GLACIER BLUE','#8DC9FD'],mono:['MONO / SILVER LIGHT','#DDE4D8']};
+let config={...DEFAULTS};
+try { config=decodePreset(location.hash) ?? config; } catch { setTimeout(()=>toast('프리셋 링크를 읽지 못해 기본 장면으로 시작합니다.'),500); }
+const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)');
+let playing=!prefersReduced.matches, time=0, lastFrame=0, rafId=0, exporting=false;
+let pointer={x:0,y:0}, toastTimer, videoSession=null;
+const canvas=$('stage');
+let renderer;
+try { renderer=new MotionRenderer(canvas); }
+catch (error) { $('canvas-wrap').innerHTML='<p class="canvas-error" role="alert">Canvas를 시작하지 못했습니다. 최신 브라우저에서 다시 열어주세요.</p>'; throw error; }
+
+$('scene-list').innerHTML=scenes.map((s,i)=>`<button class="scene-button" data-scene="${SCENES[i]}" aria-pressed="false" title="${s.name} (${i+1})"><span class="scene-icon"><svg viewBox="0 0 32 32" aria-hidden="true">${icons[i]}</svg></span><span><strong>${s.short}</strong><small>${String(i+1).padStart(2,'0')} / ${s.label}</small></span><span class="scene-arrow">↗</span></button>`).join('');
+
+function toast(message) {
+  $('toast').textContent=message;
+  $('toast').classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3800);
+}
+function updateSlider(id,value) { $(id).value=value; $(id).style.setProperty('--fill',`${value}%`); $(id+'-value').textContent=`${Math.round(value)}%`; }
+function updatePlay() { $('pause-icon').toggleAttribute('hidden',!playing); $('play-icon').toggleAttribute('hidden',playing); $('play').setAttribute('aria-label',playing?'일시정지':'재생'); }
+function updateTime() { $('timeline').value=time; $('timeline').style.setProperty('--fill',`${time/DURATION*100}%`); $('time-display').textContent=`00:${Math.floor(time).toString().padStart(2,'0')}`; }
+function updateUI() {
+  const index=SCENES.indexOf(config.scene), scene=scenes[index];
+  document.querySelectorAll('[data-scene]').forEach(b=>{const active=b.dataset.scene===config.scene;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
+  document.querySelectorAll('[data-palette]').forEach(b=>{const active=b.dataset.palette===config.palette;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',String(active));});
+  $('scene-code').textContent=`EXP. ${String(index+1).padStart(3,'0')}`;
+  $('stage-index').textContent=String(index+1).padStart(2,'0');
+  $('detail-number').textContent=String(index+1).padStart(2,'0')+' /';
+  $('stage-name').textContent=scene.canvas;
+  $('stage-name').style.whiteSpace='pre-line';
+  $('scene-title').textContent=scene.name;
+  $('scene-subtitle').textContent=scene.description;
+  $('scene-tags').replaceChildren(...scene.tags.map(t=>{const span=document.createElement('span');span.textContent=t;return span;}));
+  $('motion-text').value=config.text;
+  $('palette-name').textContent=paletteLabels[config.palette][0];
+  $('palette-hex').textContent=paletteLabels[config.palette][1];
+  updateSlider('intensity',config.intensity*100);updateSlider('detail',config.detail*100);
+  $('speed').value=config.speed;$('aspect').value=config.aspect;
+  $('canvas-wrap').style.aspectRatio=config.aspect.replace(':','/');
+  const [w,h]=outputSize(config.aspect);$('dimensions').textContent=`${w} × ${h}`;
+  updatePlay();updateTime();resize();
+}
+function render() { renderer.render(time,{...config,pointer,reducedMotion:false}); }
+function resize() {
+  const rect=$('canvas-wrap').getBoundingClientRect(),[w,h]=outputSize(config.aspect);
+  // Match the preview to export framing, including square and portrait.
+  const scale=Math.min(rect.width/w,rect.height/h);
+  renderer.resize(Math.max(2,Math.round(w*scale)),Math.max(2,Math.round(h*scale)),Math.min(devicePixelRatio||1,2));
+  render();
+}
+function frame(now) {
+  if(lastFrame && playing && !document.hidden && !exporting) { time=(time+Math.min((now-lastFrame)/1000,0.1)*config.speed)%DURATION; }
+  lastFrame=now;
+  if(!exporting && !document.hidden && playing) {render();updateTime();}
+  rafId=requestAnimationFrame(frame);
+}
+function selectScene(scene) {config.scene=scene;time=0;pointer={x:0,y:0};updateUI();}
+function shuffle() {
+  const different=PALETTES.filter(p=>p!==config.palette);config.palette=different[Math.floor(Math.random()*different.length)];
+  config.intensity=0.3+Math.random()*0.65;config.detail=0.35+Math.random()*0.6;updateUI();toast('새로운 조합을 만들었습니다.');
+}
+function download(blob,filename) {
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+}
+function filename(ext) {return `flux-${config.scene}-${config.palette}.${ext}`;}
+function renderOutput(t) {
+  const output=document.createElement('canvas'),[w,h]=outputSize(config.aspect);
+  const engine=new MotionRenderer(output);engine.resize(w,h,1);engine.render(t,{...config,pointer:{x:0,y:0},reducedMotion:false});
+  return {output,engine};
+}
+async function exportPNG() {
+  try {
+    const {output,engine}=renderOutput(time);
+    const blob=await new Promise(resolve=>output.toBlob(resolve,'image/png'));engine.destroy();
+    if(!blob)throw new Error('PNG를 생성하지 못했습니다.');download(blob,filename('png'));toast('스틸 이미지를 저장했습니다.');
+  }catch(error){toast(error.message||'이미지 저장에 실패했습니다.');}
+}
+const webmType=typeof MediaRecorder==='undefined' ? null : ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));
+if(!webmType || !canvas.captureStream) { $('export-video').disabled=true;$('export-video').title='WebM 녹화를 지원하는 최신 Chrome 또는 Edge에서 사용해 주세요.'; }
+function stopVideo(cancelled=false) {
+  if(!videoSession)return;
+  videoSession.cancelled ||= cancelled;
+  if(videoSession.recorder.state!=='inactive')videoSession.recorder.stop();
+}
+async function exportVideo() {
+  if(exporting || !webmType)return;
+  const capturedConfig={...config};
+  let output,engine,stream,recorder;
+  try {
+    ({output,engine}=renderOutput(0));stream=output.captureStream(30);
+    recorder=new MediaRecorder(stream,{mimeType:webmType,videoBitsPerSecond:12_000_000});
+  }catch(error){stream?.getTracks().forEach(t=>t.stop());engine?.destroy();toast('이 브라우저에서는 영상 녹화를 시작할 수 없습니다.');return;}
+  exporting=true;
+  const session={recorder,stream,engine,output,cancelled:false,raf:0,started:0,chunks:[],error:false};videoSession=session;
+  $('export-progress').value=0;$('export-status').textContent='8초 분량의 WebM 영상을 실시간으로 저장합니다.';$('export-dialog').showModal();
+  recorder.ondataavailable=e=>{if(e.data.size)session.chunks.push(e.data);};
+  recorder.onerror=()=>{session.error=true;stopVideo(true);};
+  recorder.onstop=()=>{
+    cancelAnimationFrame(session.raf);session.stream.getTracks().forEach(t=>t.stop());session.engine.destroy();
+    $('export-dialog').close();videoSession=null;exporting=false;lastFrame=0;
+    if(!session.cancelled && session.chunks.length){download(new Blob(session.chunks,{type:webmType}),`flux-${capturedConfig.scene}-${capturedConfig.palette}.webm`);toast('8초 영상을 저장했습니다.');}
+    else toast(session.error?'녹화 중 오류가 발생했습니다. 다시 시도해 주세요.':'내보내기를 취소했습니다.');
+  };
+  recorder.start(250);
+  const tick=(now)=>{
+    if(videoSession!==session || recorder.state==='inactive')return;
+    if(!session.started)session.started=now;
+    const elapsed=(now-session.started)/1000;
+    engine.render((Math.min(elapsed,DURATION)*capturedConfig.speed)%DURATION,{...capturedConfig,pointer:{x:0,y:0},reducedMotion:false});
+    $('export-progress').value=Math.min(elapsed/DURATION,1);
+    $('export-status').textContent=`${Math.min(elapsed,DURATION).toFixed(1)} / 8.0초 · 이 탭을 열어 두세요.`;
+    if(elapsed>=DURATION)stopVideo();else session.raf=requestAnimationFrame(tick);
+  };
+  session.raf=requestAnimationFrame(tick);
+}
+async function share() {
+  const url=new URL(location.href);url.hash=encodePreset(config);
+  history.replaceState(null,'',url);
+  try { await navigator.clipboard.writeText(url.href);toast('현재 설정의 링크를 복사했습니다.'); }
+  catch { toast('현재 설정을 주소창에 저장했습니다. 주소를 복사해 공유하세요.'); }
+}
+async function importPreset(file) {
+  if(!file)return;
+  try {
+    if(file.size>65536)throw new Error('프리셋은 64KB 이하의 JSON 파일이어야 합니다.');
+    const value=JSON.parse(await file.text());
+    if(value.app!=='FLUX' || value.version!==1 || !value.config)throw new Error('FLUX에서 저장한 프리셋을 선택해 주세요.');
+    config=normalizePreset(value);time=0;updateUI();toast('프리셋을 불러왔습니다.');
+  }catch(error){toast(error instanceof SyntaxError?'JSON 파일을 읽지 못했습니다.':error.message);}
+  finally{$('preset-file').value='';}
+}
+
+$('scene-list').addEventListener('click',e=>{const button=e.target.closest('[data-scene]');if(button)selectScene(button.dataset.scene);});
+$('palettes').addEventListener('click',e=>{const button=e.target.closest('[data-palette]');if(button){config.palette=button.dataset.palette;updateUI();}});
+$('play').addEventListener('click',()=>{playing=!playing;lastFrame=0;updatePlay();render();});
+$('restart').addEventListener('click',()=>{time=0;updateTime();render();});
+$('timeline').addEventListener('input',e=>{time=Number(e.target.value);updateTime();render();});
+for(const key of ['intensity','detail'])$(key).addEventListener('input',e=>{config[key]=Number(e.target.value)/100;updateSlider(key,e.target.value);render();});
+$('motion-text').addEventListener('input',e=>{config.text=Array.from(e.target.value).slice(0,24).join('');render();});
+$('speed').addEventListener('change',e=>{config.speed=Number(e.target.value);});
+$('aspect').addEventListener('change',e=>{config.aspect=e.target.value;updateUI();requestAnimationFrame(resize);});
+$('canvas-wrap').addEventListener('pointermove',e=>{if(prefersReduced.matches)return;const r=canvas.getBoundingClientRect();pointer={x:Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1)),y:Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1))};if(!playing)render();});
+$('canvas-wrap').addEventListener('pointerleave',()=>{pointer={x:0,y:0};if(!playing)render();});
+$('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('canvas-wrap').requestFullscreen();}catch{toast('브라우저가 전체 화면을 지원하지 않습니다.');}});
+$('shuffle').addEventListener('click',shuffle);
+$('export-png').addEventListener('click',exportPNG);$('export-video').addEventListener('click',exportVideo);
+$('cancel-export').addEventListener('click',()=>stopVideo(true));$('export-dialog').addEventListener('cancel',e=>{e.preventDefault();stopVideo(true);});
+$('share').addEventListener('click',share);
+$('save-preset').addEventListener('click',()=>{download(new Blob([JSON.stringify(serializePreset(config),null,2)],{type:'application/json'}),filename('json'));document.querySelector('.preset-menu').open=false;toast('프리셋을 저장했습니다.');});
+$('load-preset').addEventListener('click',()=>{document.querySelector('.preset-menu').open=false;$('preset-file').click();});
+$('preset-file').addEventListener('change',e=>importPreset(e.target.files[0]));
+$('show-help').addEventListener('click',()=>$('help-dialog').showModal());$('close-help').addEventListener('click',()=>$('help-dialog').close());
+document.addEventListener('keydown',e=>{
+  if(e.target.closest('input,textarea,select,button,a,summary,[contenteditable="true"]')||e.ctrlKey||e.metaKey||e.altKey||document.querySelector('dialog[open]'))return;
+  if(e.code==='Space'){e.preventDefault();$('play').click();}
+  else if(/^[1-6]$/.test(e.key))selectScene(SCENES[Number(e.key)-1]);
+  else if(e.key.toLowerCase()==='s')shuffle();else if(e.key.toLowerCase()==='r')$('restart').click();
+  else if(e.key==='?')$('help-dialog').showModal();
+});
+document.addEventListener('visibilitychange',()=>{lastFrame=0;if(document.hidden && exporting){stopVideo(true);}});
+prefersReduced.addEventListener('change',e=>{if(e.matches){playing=false;pointer={x:0,y:0};updatePlay();render();}});
+window.addEventListener('hashchange',()=>{try{const next=decodePreset(location.hash);if(next){config=next;time=0;updateUI();}}catch{toast('올바르지 않은 프리셋 링크입니다.');}});
+window.addEventListener('pagehide',()=>{cancelAnimationFrame(rafId);if(exporting)stopVideo(true);});
+new ResizeObserver(()=>resize()).observe($('canvas-wrap'));
+updateUI();rafId=requestAnimationFrame(frame);
+
+</script>
+</body>
+</html>
